@@ -1,8 +1,8 @@
 site: ldap.eurocontrol.fr
 port: 389
-ldap_base: ou=eurousers,o=eurocontrol,o=ec
-ldap_filter: (&(objectclass=eurocontrolperson)(%s=*%s*))
-ldap_attrs:
+ldapbase: ou=eurousers,o=eurocontrol,o=ec
+ldapfilter: (&(objectclass=eurocontrolperson)(%s=*%s*))
+attrs:
   - ksn
   - kgivenname
   - telephonenumber
