@@ -28,13 +28,7 @@ func main () {
 	config, err := config.LoadConfig(RcFile)
 	if err != nil {
 		log.Printf("Warning: can't load %s, using defaults\n", RcFile)
-		config = config.Config{
-			Site:DEF_SERVER,
-			Port:DEF_PORT,
-			LdapBase:DEF_BASE,
-			LdapFilter:DEF_FILTER,
-			Attrs:DEF_ATTRS,
-		}
+		config.SetDefaults()
 	}
 	flag.Parse()
 
