@@ -20,9 +20,6 @@ import (
 	"fmt"
 )
 
-const (
-)
-
 var (
 	RcFile = filepath.Join(os.Getenv("HOME"), ".erc-search", "config.yml")
 )
