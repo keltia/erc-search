@@ -16,7 +16,7 @@ clean:
 	rm -f ${DEST}/erc-search
 
 ${DEST}/erc-search:    ${SRCS}
-	go build -v -o $@ erc-search/erc-search.go erc-search/cli.go
+	go build -v
 
 push:
 	git push --all
