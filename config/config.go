@@ -25,8 +25,11 @@ import (
 )
 
 type Config struct {
-	Site     string
-	Port     string
+	Site       string
+	Port       string
+	LdapBase   string
+	LdapFilter string
+	Attrs      []string
 }
 
 // Load a file as a YAML document and return the structure
