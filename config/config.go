@@ -26,7 +26,7 @@ import (
 
 type Config struct {
 	Site       string
-	Port       string
+	Port       int
 	LdapBase   string
 	LdapFilter string
 	Attrs      []string

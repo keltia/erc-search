@@ -6,7 +6,7 @@
  This file hold various default values
  */
 
-package main
+package config
 
 const (
 	DEF_SERVER = "ldap.eurocontrol.fr"
