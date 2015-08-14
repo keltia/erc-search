@@ -32,6 +32,9 @@ func main () {
 	}
 	flag.Parse()
 
+	if fVerbose {
+		log.Printf("Default config:\n%s", config.String())
+	}
 
 	if flag.Arg(0) == "" {
 		log.Fatalln("Error: You must specify a search string")

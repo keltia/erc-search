@@ -22,6 +22,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 	"log"
+	"fmt"
 )
 
 type Config struct {
@@ -30,6 +31,12 @@ type Config struct {
 	LdapBase   string
 	LdapFilter string
 	Attrs      []string
+}
+
+// Basic Stringer for Config
+func (c *Config) String() string {
+	return fmt.Sprintf("ldap://%s:%d/%s\n  Filter: %s\n  Attrs: %v",
+	c.Site, c.Port, c.LdapBase, c.LdapFilter, c.Attrs)
 }
 
 // Load a file as a YAML document and return the structure
