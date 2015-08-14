@@ -14,6 +14,9 @@ const (
 
 	DEF_BASE = "ou=eurousers,o=eurocontrol,o=ec"
 	DEF_FILTER = "(&(objectclass=eurocontrolperson)(%s=*%s*))"
+)
+
+var (
 	DEF_ATTRS = []string{
 		"ksn",
 		"kgivenname",
@@ -25,4 +28,3 @@ const (
 		"eurocontrolgrade",
 	}
 )
-
