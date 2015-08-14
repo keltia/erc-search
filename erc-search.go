@@ -27,9 +27,17 @@ var (
 func main () {
 	config, err := config.LoadConfig(RcFile)
 	if err != nil {
-		log.Printf("Warning: can not load %s\n", RcFile)
+		log.Printf("Warning: can't load %s, using defaults\n", RcFile)
+		config = config.Config{
+			Site:DEF_SERVER,
+			Port:DEF_PORT,
+			LdapBase:DEF_BASE,
+			LdapFilter:DEF_FILTER,
+			Attrs:DEF_ATTRS,
+		}
 	}
 	flag.Parse()
+
 
 	if flag.Arg(0) == "" {
 		log.Fatalln("Error: You must specify a search string")
