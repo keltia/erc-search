@@ -48,3 +48,12 @@ func LoadConfig(file string) (Config, error) {
 
 	return *c, err
 }
+
+// Set defaults
+func (c *Config) SetDefaults() {
+	c.Site =     DEF_SERVER
+	c.Port =     DEF_PORT
+	c.LdapBase = DEF_BASE
+	c.LdapFilter = DEF_FILTER
+	c.Attrs =      DEF_ATTRS
+}
