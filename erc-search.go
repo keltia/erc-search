@@ -12,17 +12,16 @@ package main
 
 import (
 	"flag"
-	"os"
-	"path/filepath"
 	"log"
 	"github.com/keltia/erc-search/config"
 	"github.com/go-ldap/ldap"
 	"fmt"
 )
 
-var (
-	RcFile = filepath.Join(os.Getenv("HOME"), ".erc-search", "config.yml")
+const (
+	RcFile = "erc-search"
 )
+
 
 // Start here
 func main () {
