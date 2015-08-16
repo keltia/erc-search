@@ -61,7 +61,7 @@ func LoadConfig(file string) (*Config, error) {
 	} else {
 		s_file = file
 	}
-	log.Println("Using", s_file)
+
 	c := new(Config)
 	buf, err := ioutil.ReadFile(s_file)
 	if err != nil {
@@ -70,7 +70,8 @@ func LoadConfig(file string) (*Config, error) {
 
 	err = toml.Unmarshal(buf, &c)
 	if err != nil {
-		log.Printf("Error parsing toml %s: %v", s_file, err)
+		return c, errors.New(fmt.Sprintf("Error parsing toml %s: %v",
+			s_file, err))
 	}
 
 	return c, err
