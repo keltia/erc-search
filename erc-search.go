@@ -24,6 +24,7 @@ var (
 	RcFile = filepath.Join(os.Getenv("HOME"), ".erc-search", "config.yml")
 )
 
+// Start here
 func main () {
 	config, err := config.LoadConfig(RcFile)
 	if err != nil {
