@@ -31,6 +31,7 @@ import (
 
 	"errors"
 	"github.com/naoina/toml"
+	"strings"
 )
 
 type Config struct {
@@ -49,13 +50,16 @@ func (c *Config) String() string {
 
 // Load a file as a TOML document and return the structure
 func LoadConfig(file string) (*Config, error) {
-	s_file := ""
+	var s_file string
+
 	// Check for tag
-	if _, err := os.Stat(file); err != nil {
+	if !strings.HasSuffix(file, ".toml") {
 		// file must be a tag so add a "."
 		s_file = filepath.Join(os.Getenv("HOME"),
 			fmt.Sprintf(".%s", file),
 			"config.toml")
+	} else {
+		s_file = file
 	}
 	log.Println("Using", s_file)
 	c := new(Config)
