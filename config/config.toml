@@ -3,12 +3,12 @@ port = 389
 base = "ou=eurousers,o=eurocontrol,o=ec"
 filter = "(&(objectclass=eurocontrolperson)(%s=*%s*))"
 attrs = [
-  ksn,
-  kgivenname,
-  telephonenumber,
-  eurocontrolroomid,
-  mail,
-  uid,
-  eurocontrolunitcode,
-  eurocontrolgrade,
+  "ksn",
+  "kgivenname",
+  "telephonenumber",
+  "eurocontrolroomid",
+  "mail",
+  "uid",
+  "eurocontrolunitcode",
+  "eurocontrolgrade",
 ]
