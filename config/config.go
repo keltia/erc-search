@@ -59,14 +59,14 @@ func LoadConfig(file string) (*Config, error) {
 
 	buf, err := ioutil.ReadFile(file)
 	if err != nil {
-		return Config{}, err
+		return nil, err
 	}
 
 	c := new(Config)
 	err = toml.Unmarshal(buf, &c)
 	if err != nil {
 		log.Println("Error parsing toml %s", file)
-		return Config{}, err
+		return nil, err
 	}
 
 	return c, err
