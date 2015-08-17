@@ -25,7 +25,6 @@ import (
 	"io/ioutil"
 
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
