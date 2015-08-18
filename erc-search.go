@@ -49,12 +49,15 @@ func main () {
 		log.Printf("Warning: can't load %s, using defaults\n", RcFile)
 		config.SetDefaults()
 	}
+
+	// Parse CLI
 	flag.Parse()
 
 	if fVerbose {
 		log.Printf("Default config:\n%s", config.String())
 	}
 
+	// We need at least one argument
 	if flag.Arg(0) == "" {
 		log.Fatalln("Error: You must specify a search string")
 	}
@@ -64,10 +67,13 @@ func main () {
 		log.Fatalf(err.Error())
 	}
 
+	// Meat of the game, the saerch
 	err = doSearch(flag.Arg(0))
 	if err != nil {
 		log.Printf("Error: searching failed: %v", err)
 	}
+
+	// We're done
 	log.Printf("Shutting down…")
 	c.Close()
 }
