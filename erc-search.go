@@ -22,6 +22,10 @@ const (
 	RcFile = "erc-search"
 )
 
+// Do the actual search
+func doSearch(query string) (error) {
+	return nil
+}
 
 // Start here
 func main () {
@@ -46,6 +50,11 @@ func main () {
 		log.Fatalf("Error: Can't connect to %s\n", config.Site)
 	}
 
+	err = doSearch(flag.Arg(0))
+	if err != nil {
+		log.Printf("Error: searching failed: %v", err)
+	}
+	log.Printf("Shutting down…")
 	c.Close()
 }
 
