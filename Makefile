@@ -9,7 +9,7 @@ SRCS=	config.go erc-search.go cli.go
 all:	${DEST}/erc-search
 
 install:
-	go install erc-search/erc-search.go erc-search/cli.go
+	go install -v
 
 clean:
 	go clean -v
