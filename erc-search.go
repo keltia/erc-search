@@ -24,7 +24,7 @@ const (
 )
 
 // Do the connection
-func doConnect(site string, port int) (ldap.Conn, error) {
+func doConnect(site string, port int) (*ldap.Conn, error) {
 	// Build connection string
 	connstr := fmt.Sprintf("%s:%d", site, port)
 
