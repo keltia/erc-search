@@ -50,28 +50,28 @@ func (c *Config) String() string {
 
 // Load a file as a TOML document and return the structure
 func LoadConfig(file string) (*Config, error) {
-	var s_file string
+	var sFile string
 
 	// Check for tag
 	if !strings.HasSuffix(file, ".toml") {
 		// file must be a tag so add a "."
-		s_file = filepath.Join(os.Getenv("HOME"),
+		sFile = filepath.Join(os.Getenv("HOME"),
 			fmt.Sprintf(".%s", file),
 			"config.toml")
 	} else {
-		s_file = file
+		sFile = file
 	}
 
 	c := new(Config)
-	buf, err := ioutil.ReadFile(s_file)
+	buf, err := ioutil.ReadFile(sFile)
 	if err != nil {
-		return c, errors.New(fmt.Sprintf("Can not read %s", s_file))
+		return c, errors.New(fmt.Sprintf("Can not read %s", sFile))
 	}
 
 	err = toml.Unmarshal(buf, &c)
 	if err != nil {
 		return c, errors.New(fmt.Sprintf("Error parsing toml %s: %v",
-			s_file, err))
+			sFile, err))
 	}
 
 	return c, err
