@@ -44,8 +44,8 @@ func doSearch(query string) (error) {
 
 // Start here
 func main () {
-	config, err := config.LoadConfig(RcFile)
-	if err != nil {
+	// Load config file if any
+	config, err := config.LoadConfig(RcFile); if err != nil {
 		log.Printf("Warning: can't load %s, using defaults\n", RcFile)
 		config.SetDefaults()
 	}
