@@ -41,6 +41,19 @@ type Config struct {
 	Attrs  []string
 }
 
+// Check the parameter for either tag or filename
+func checkName(file string) string {
+	// Check for tag
+	if !strings.HasSuffix(file, ".toml") {
+		// file must be a tag so add a "."
+		return filepath.Join(os.Getenv("HOME"),
+			fmt.Sprintf(".%s", file),
+			"config.toml")
+	} else {
+		return file
+	}
+}
+
 // Basic Stringer for Config
 func (c *Config) String() string {
 	return fmt.Sprintf("ldap://%s:%d/%s\n  Filter: %s\n  Attrs: %v",
@@ -49,17 +62,8 @@ func (c *Config) String() string {
 
 // Load a file as a TOML document and return the structure
 func LoadConfig(file string) (*Config, error) {
-	var sFile string
-
 	// Check for tag
-	if !strings.HasSuffix(file, ".toml") {
-		// file must be a tag so add a "."
-		sFile = filepath.Join(os.Getenv("HOME"),
-			fmt.Sprintf(".%s", file),
-			"config.toml")
-	} else {
-		sFile = file
-	}
+	sFile := checkName(file)
 
 	c := new(Config)
 	buf, err := ioutil.ReadFile(sFile)
