@@ -16,11 +16,26 @@ import (
 	"github.com/keltia/erc-search/config"
 	"github.com/go-ldap/ldap"
 	"fmt"
+	"errors"
 )
 
 const (
 	RcFile = "erc-search"
 )
+
+// Do the connection
+func doConnect(site string, port int) (ldap.Conn, error) {
+	// Build connection string
+	connstr := fmt.Sprintf("%s:%d", site, port)
+
+	// Connect
+	c, err := ldap.Dial("tcp", connstr);
+	if err != nil {
+		return c, errors.New(fmt.Sprintf("Error: Can't connect to %s\n", site))
+	}
+
+	return c, nil
+}
 
 // Do the actual search
 func doSearch(query string) (error) {
@@ -44,10 +59,9 @@ func main () {
 		log.Fatalln("Error: You must specify a search string")
 	}
 
-	site := fmt.Sprintf("%s:%d", config.Site, config.Port)
-	c, err := ldap.Dial("tcp", site);
-	if err != nil {
-		log.Fatalf("Error: Can't connect to %s\n", config.Site)
+	// Connect to the server
+	c, err := doConnect(config.Site, config.Port); if err != nil {
+		log.Fatalf(err.Error())
 	}
 
 	err = doSearch(flag.Arg(0))
