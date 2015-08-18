@@ -67,7 +67,7 @@ func main () {
 		log.Fatalf(err.Error())
 	}
 
-	// Meat of the game, the saerch
+	// Meat of the game, the search
 	err = doSearch(flag.Arg(0))
 	if err != nil {
 		log.Printf("Error: searching failed: %v", err)
