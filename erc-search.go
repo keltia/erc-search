@@ -51,9 +51,9 @@ func doConnect(site string, port int) (*ldap.Conn, error) {
 	// Build connection string
 	connstr := fmt.Sprintf("%s:%d", site, port)
 
-	if fVerbose {
-		log.Printf("Connecting to %s\n", connstr)
-	}
+	// Even in non-verbose, display something
+	log.Printf("Connecting to %s\n", connstr)
+
 	// Connect
 	c, err := ldap.Dial("tcp", connstr);
 	if err != nil {
