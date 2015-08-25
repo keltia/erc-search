@@ -142,7 +142,12 @@ func main () {
 		log.Fatalln("Error: You must specify a search string")
 	}
 
+	// Do the actual connect
 	myldap, err := newServer(config)
+	if err != nil {
+		log.Fatalf("Error: can not connect to %s: %s", config.Site, err.Error())
+	}
+	defer myldap.Close()
 
 	// Minimum search is uid
 	attrs := map[string]bool{
@@ -171,6 +176,5 @@ func main () {
 
 	// We're done
 	log.Printf("Shutting down…")
-	myldap.Close()
 }
 
