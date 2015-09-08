@@ -4,7 +4,7 @@ VPATH=	erc-search:config
 DEST=	bin
 GOBIN=	${GOPATH}/bin
 
-SRCS=	config.go erc-search.go cli.go
+SRCS=	config.go erc-search.go cli.go ldap.go
 
 all:	${DEST}/erc-search
 
