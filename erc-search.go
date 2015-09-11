@@ -13,7 +13,7 @@ package main
 import (
 	"flag"
 	"log"
-	"github.com/keltia/erc-search/config"
+	"./config"
 )
 
 const (
