@@ -8,5 +8,5 @@ branches:
   - master
 install:
   - go get github.com/naoina/toml
+  - go get github.com/go-ldap/ldap
   - go get github.com/keltia/erc-search/config
-
