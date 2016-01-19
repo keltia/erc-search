@@ -49,14 +49,12 @@ func main () {
 
 	// Minimum search is uid
 	attrs := map[string]bool{
+		"kgivenname": true,
+		"ksn": true,
 		"uid": true,
 	}
 
 	// Setup searches
-	if fInclFull {
-		attrs["ksn"] = true
-		attrs["kgivenname"] = true
-	}
 	if fInclMail {
 		attrs["mail"] = true
 	}
