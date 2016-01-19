@@ -8,7 +8,7 @@ SRCS=	erc-search.go cli.go ldap.go config.go defaults.go
 all:	erc-search
 
 install:
-	go install -v
+	go install -v ./...
 
 clean:
 	go clean -v
