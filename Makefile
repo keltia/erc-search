@@ -2,20 +2,20 @@
 
 VPATH=	cmd/erc-search:config
 GOBIN=	${GOPATH}/bin
-
+OPTS=	-ldflags="-s -w" -v
 SRCS=	erc-search.go cli.go ldap.go config.go defaults.go
 
 all:	erc-search
 
 install:
-	go install -v ./...
+	go install ${OPTS} ./...
 
 clean:
 	go clean -v
 	rm -f erc-search
 
 erc-search:    ${SRCS}
-	go build -v ./...
+	go build ${OPTS} ./...
 
 push:
 	git push --all
