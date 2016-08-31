@@ -52,11 +52,16 @@ func main () {
 		"kgivenname": true,
 		"ksn": true,
 		"uid": true,
+		"eurocontrolworkstation": false,
 	}
 
 	// Setup searches
 	if fInclMail {
 		attrs["mail"] = true
+	}
+
+	if fWorkStation {
+		attrs["eurocontrolworkstation"] = true
 	}
 
 	// Meat of the game, the search
