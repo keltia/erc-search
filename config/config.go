@@ -14,10 +14,10 @@
 
  	or
 
-    rc := config.LoadConfig("foo.yml")
+    rc := config.LoadConfig("foo.toml")
 
- In the first case, $HOME/.tag/config.yml will be loaded.  On Windows
- rc will be serialized from YAML.
+ In the first case, $HOME/.tag/config.toml will be loaded.  On Windows
+ rc will be serialized from TOML.
 */
 package config
 
