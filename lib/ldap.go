@@ -4,7 +4,7 @@
 /*
     Package to implement a thin layer over the ldap server
  */
-package main
+package ldap
 
 import (
 
@@ -16,26 +16,35 @@ import (
 )
 
 // Wrap the ldap parameters
-type ldapServer struct {
+type Server struct {
 	c      *ldap.Conn
-	site   string
-	config config.Config
+	Site   string
+	Port   int
+	Base   string
+	Filter string
+	Attrs  []string
+
+	Verbose bool
 }
 
 // Create a new client instance
-func newServer(config *config.Config) (*ldapServer, error) {
-	s := new(ldapServer)
+func NewServer(src config.Source) (srv *Server, err error) {
+	s := &Server{
+		Site: src.Site,
+		Port: src.Port,
+		Base: src.Base,
+		Filter: src.Filter,
+		Attrs: src.Attrs,
+	}
+
+	log.Printf("Adding %v as source", src)
 	// Connect to the server
-	c, err := doConnect(config.Site, config.Port); if err != nil {
+	s.c, err = doConnect(s.Site, s.Port); if err != nil {
 		return s, err
 	}
-	s.c = c
-	s.site = config.Site
-
 	// Save config for later operations.
-	s.config = *config
-
-	return s, nil
+	srv = s
+	return
 }
 
 // Do the connection
@@ -55,26 +64,31 @@ func doConnect(site string, port int) (*ldap.Conn, error) {
 	return c, nil
 }
 
+// SetVerbose sets verbose mode
+func (myldap *Server) SetVerbose(v bool) {
+	myldap.Verbose = v || false
+}
+
 // Close the connection
-func (myldap *ldapServer) Close() (error) {
+func (myldap *Server) Close() (error) {
 	myldap.c.Close()
 	return nil
 }
 
 // Search the specific attribute
-func (myldap *ldapServer) searchAttr(query, attr string) (*ldap.SearchResult, error) {
+func (myldap *Server) SearchAttr(query, attr string) (*ldap.SearchResult, error) {
 
-	filter := fmt.Sprintf(myldap.config.Filter, attr, query)
-	if fVerbose {
+	filter := fmt.Sprintf(myldap.Filter, attr, query)
+	if myldap.Verbose {
 		log.Printf("  Using %s as filter\n", filter)
 	}
-	sr := ldap.NewSearchRequest(myldap.config.Base,
+	sr := ldap.NewSearchRequest(myldap.Base,
 	 	ldap.ScopeWholeSubtree,
 		ldap.DerefAlways,
 		0, 0,
 		false,
 		filter,
-		myldap.config.Attrs,
+		myldap.Attrs,
 		nil,
 	)
 	res, err := myldap.c.Search(sr)
@@ -86,25 +100,25 @@ func (myldap *ldapServer) searchAttr(query, attr string) (*ldap.SearchResult, er
 }
 
 // Do the actual search
-func (myldap *ldapServer) doSearch (attrs map[string]bool, query string) (map[string]ldap.Entry, error) {
+func (myldap *Server) Search(attrs map[string]bool, query string) (map[string]ldap.Entry, error) {
 
 	allResults := make(map[string]ldap.Entry)
 	for attr, yes := range attrs {
 		if yes {
-			if fVerbose {
+			if myldap.Verbose {
 				fmt.Printf("  Looking for %s in %s…\n", query, attr)
 			}
-			res, err := myldap.searchAttr(query, attr)
+			res, err := myldap.SearchAttr(query, attr)
 			if err != nil {
 				log.Printf("Warning: search for %s failed: %v", attr, err)
 			}
 
 			// Merge entries with the previous searches ones
-			if fVerbose {
+			if myldap.Verbose {
 				log.Printf("  Merging %d entries…\n", len(res.Entries))
 			}
 			for _, entry := range res.Entries {
-				if fVerbose {
+				if myldap.Verbose {
 					entry.PrettyPrint(2)
 				}
 				allResults[entry.GetAttributeValue("uid")] = *entry
