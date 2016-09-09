@@ -25,13 +25,4 @@ port = 3268
 base = "DC=sky,DC=corp,DC=eurocontrol,DC=int"
 filter = "(%s=*%s*)"
 attrs = [
-  "ksn",
-  "kgivenname",
-  "telephonenumber",
-  "eurocontrolroomid",
-  "mail",
-  "uid",
-  "eurocontrolunitcode",
-  "eurocontrolgrade",
-  "eurocontrolworkstation",
 ]
