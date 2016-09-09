@@ -38,7 +38,7 @@ func (ctx *context) NewSource(name string) (config.Source) {
 // searchForPeople looks into the corporate LDAP
 func searchForPeople(ctx context, text string) {
 	// Do the actual connect
-	src := ctx.cnf.Sources["corporate"]
+	src := ctx.NewSource("corporate")
 	log.Printf("Source: %v CNF: %v", src, ctx.cnf)
 	server, err := myldap.NewServer(src)
 	if err != nil {
@@ -81,8 +81,7 @@ func searchForPeople(ctx context, text string) {
 
 // searchForMachine looks into AD for computers
 func searchForMachine(ctx context, name string) {
-	cnf := ctx.cnf
-	src := cnf.Sources["ad"]
+	src := ctx.NewSource("ad")
 	myad, err := myldap.NewServer(src)
 	if err != nil {
 		log.Fatalf("Error: can not connect to %s: %s", src.Site, err.Error())
