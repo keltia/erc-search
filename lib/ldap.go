@@ -41,7 +41,7 @@ func NewServer(src config.Source) (srv *Server, err error) {
 		Base: src.Base,
 		Filter: src.Filter,
 		Attrs: src.Attrs,
-	}
+	}, err
 }
 
 // Do the connection
