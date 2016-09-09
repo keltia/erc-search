@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"log"
 	"errors"
+	"github.com/keltia/go/test/fixedbugs"
 )
 
 // Wrap the ldap parameters
@@ -29,22 +30,19 @@ type Server struct {
 
 // Create a new client instance
 func NewServer(src config.Source) (srv *Server, err error) {
-	s := &Server{
+	log.Printf("Adding %v as source", src)
+	// Connect to the server
+	c, err := doConnect(src.Site, src.Port); if err != nil {
+		return nil, err
+	}
+	return &Server{
+		c: c,
 		Site: src.Site,
 		Port: src.Port,
 		Base: src.Base,
 		Filter: src.Filter,
 		Attrs: src.Attrs,
 	}
-
-	log.Printf("Adding %v as source", src)
-	// Connect to the server
-	s.c, err = doConnect(s.Site, s.Port); if err != nil {
-		return s, err
-	}
-	// Save config for later operations.
-	srv = s
-	return
 }
 
 // Do the connection
