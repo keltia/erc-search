@@ -30,6 +30,11 @@ type context struct {
 	verbose bool
 }
 
+func (ctx *context) NewSource(name string) (config.Source) {
+	// Do the actual connect
+	return ctx.cnf.Sources[name]
+}
+
 // searchForPeople looks into the corporate LDAP
 func searchForPeople(ctx context, text string) {
 	// Do the actual connect
