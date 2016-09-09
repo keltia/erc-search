@@ -1,7 +1,29 @@
+verbose = false
+
+[sources]
+
+[sources.corporate]
 site = "ldap.eurocontrol.fr"
 port = 389
 base = "ou=eurousers,o=eurocontrol,o=ec"
 filter = "(&(objectclass=eurocontrolperson)(%s=*%s*))"
+attrs = [
+  "ksn",
+  "kgivenname",
+  "telephonenumber",
+  "eurocontrolroomid",
+  "mail",
+  "uid",
+  "eurocontrolunitcode",
+  "eurocontrolgrade",
+  "eurocontrolworkstation",
+]
+
+[sources.ad]
+site = "sspdc001.sky.corp.eurocontrol.int"
+port = 3268
+base = "DC=sky,DC=corp,DC=eurocontrol,DC=int"
+filter = "(%s=*%s*)"
 attrs = [
   "ksn",
   "kgivenname",

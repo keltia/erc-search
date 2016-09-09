@@ -27,18 +27,23 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
-	"errors"
-	"github.com/naoina/toml"
 	"strings"
+
+	"github.com/naoina/toml"
+	"log"
 )
 
-type Config struct {
+type Source struct {
 	Site   string
 	Port   int
 	Base   string
 	Filter string
 	Attrs  []string
+}
+
+type Config struct {
+	Verbose bool
+	Sources map[string]Source
 }
 
 // Check the parameter for either tag or filename
@@ -56,8 +61,12 @@ func checkName(file string) string {
 
 // Basic Stringer for Config
 func (c *Config) String() string {
-	return fmt.Sprintf("ldap://%s:%d/%s\n  Filter: %s\n  Attrs: %v",
-		c.Site, c.Port, c.Base, c.Filter, c.Attrs)
+	str := fmt.Sprintf("Verbose = %v\n", c.Verbose)
+	for _, s := range c.Sources {
+		str = str + fmt.Sprintf("ldap://%s:%d/%s\n  Filter: %s\n  Attrs: %v\n",
+			s.Site, s.Port, s.Base, s.Filter, s.Attrs)
+	}
+	return str
 }
 
 // Load a file as a TOML document and return the structure
@@ -68,13 +77,12 @@ func LoadConfig(file string) (*Config, error) {
 	c := new(Config)
 	buf, err := ioutil.ReadFile(sFile)
 	if err != nil {
-		return c, errors.New(fmt.Sprintf("Can not read %s", sFile))
+		return c, fmt.Errorf("Can not read %s", sFile)
 	}
 
 	err = toml.Unmarshal(buf, &c)
 	if err != nil {
-		return c, errors.New(fmt.Sprintf("Error parsing toml %s: %v",
-			sFile, err))
+		return c, fmt.Errorf("Error parsing toml %s: %v", sFile, err)
 	}
 
 	return c, err
@@ -82,9 +90,5 @@ func LoadConfig(file string) (*Config, error) {
 
 // Set defaults
 func (c *Config) SetDefaults() {
-	c.Site = DEF_SERVER
-	c.Port = DEF_PORT
-	c.Base = DEF_BASE
-	c.Filter = DEF_FILTER
-	c.Attrs = DEF_ATTRS
+	log.Fatalf("Please set the defaults in the config.toml file.")
 }
