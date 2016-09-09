@@ -41,7 +41,7 @@ func searchForPeople(ctx context, text string) {
 	}
 	defer server.Close()
 
-	if fVerbose {
+	if ctx.verbose {
 		server.SetVerbose(true)
 	}
 
