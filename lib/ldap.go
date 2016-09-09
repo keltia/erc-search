@@ -63,7 +63,7 @@ func doConnect(site string, port int) (*ldap.Conn, error) {
 
 // SetVerbose sets verbose mode
 func (myldap *Server) SetVerbose(v bool) {
-	myldap.Verbose = v || false
+	myldap.Verbose = v
 }
 
 // Close the connection
