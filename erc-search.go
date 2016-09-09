@@ -55,16 +55,12 @@ func searchForPeople(ctx context, text string) {
 		"kgivenname": true,
 		"ksn":        true,
 		"uid":        true,
-		"eurocontrolworkstation": false,
+		"eurocontrolworkstation": true,
 	}
 
 	// Setup searches
 	if fInclMail {
 		attrs["mail"] = true
-	}
-
-	if fWorkStation {
-		attrs["eurocontrolworkstation"] = true
 	}
 
 	// Meat of the game, the search
