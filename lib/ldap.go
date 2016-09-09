@@ -13,7 +13,6 @@ import (
 	"fmt"
 	"log"
 	"errors"
-	"github.com/keltia/go/test/fixedbugs"
 )
 
 // Wrap the ldap parameters
