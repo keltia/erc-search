@@ -6,52 +6,50 @@
 
 /*
  Package main implement a basic wrapper around LDAP search function.
- */
+*/
 
 package main
 
 import (
 	"flag"
-	"log"
 	"github.com/keltia/erc-search/config"
+	myldap "github.com/keltia/erc-search/lib"
+	"log"
 )
 
 const (
-	RcFile = "erc-search"
+	rcFile = "erc-search"
 )
 
-// Start here
-func main () {
-	// Load config file if any
-	config, err := config.LoadConfig(RcFile); if err != nil {
-		log.Printf("Warning: can't load %s, using defaults\n", RcFile)
-		config.SetDefaults()
-	}
+var (
+	ctx context
+)
 
-	// Parse CLI
-	flag.Parse()
+type context struct {
+	cnf     *config.Config
+	verbose bool
+}
+
+// searchForPeople looks into the corporate LDAP
+func searchForPeople(ctx context, text string) {
+	// Do the actual connect
+	src := ctx.cnf.Sources["corporate"]
+	log.Printf("Source: %v CNF: %v", src, ctx.cnf)
+	server, err := myldap.NewServer(src)
+	if err != nil {
+		log.Fatalf("Error: can not connect to %s: %v", src.Site, err)
+	}
+	defer server.Close()
 
 	if fVerbose {
-		log.Printf("Default config:\n%s", config.String())
+		server.SetVerbose(true)
 	}
-
-	// We need at least one argument
-	if flag.Arg(0) == "" {
-		log.Fatalln("Error: You must specify a search string")
-	}
-
-	// Do the actual connect
-	myldap, err := newServer(config)
-	if err != nil {
-		log.Fatalf("Error: can not connect to %s: %s", config.Site, err.Error())
-	}
-	defer myldap.Close()
 
 	// Minimum search is uid
 	attrs := map[string]bool{
 		"kgivenname": true,
-		"ksn": true,
-		"uid": true,
+		"ksn":        true,
+		"uid":        true,
 		"eurocontrolworkstation": false,
 	}
 
@@ -65,7 +63,7 @@ func main () {
 	}
 
 	// Meat of the game, the search
-	res, err := myldap.doSearch(attrs, flag.Arg(0))
+	res, err := server.Search(attrs, flag.Arg(0))
 	if err != nil {
 		log.Printf("Error: searching failed: %v", err)
 	}
@@ -74,8 +72,57 @@ func main () {
 		entry.PrettyPrint(2)
 	}
 	log.Printf("Found %d results\n", len(res))
+}
 
+// searchForMachine looks into AD for computers
+func searchForMachine(ctx context, name string) {
+	cnf := ctx.cnf
+	src := cnf.Sources["ad"]
+	myad, err := myldap.NewServer(src)
+	if err != nil {
+		log.Fatalf("Error: can not connect to %s: %s", src.Site, err.Error())
+	}
+	defer myad.Close()
+
+	if ctx.verbose {
+		myad.SetVerbose(true)
+	}
+
+}
+
+// Start here
+func main() {
+	// Load config file if any
+	cnf, err := config.LoadConfig(rcFile)
+	if err != nil {
+		log.Printf("Warning: can't load %s\n", rcFile)
+		cnf.SetDefaults()
+	}
+
+	ctx = context{
+		cnf:     cnf,
+		verbose: false,
+	}
+
+	// Parse CLI
+	flag.Parse()
+
+	if fVerbose {
+		ctx.verbose = true
+		log.Printf("Default config:\n%s", cnf.String())
+	}
+
+	// We need at least one argument
+	if flag.Arg(0) == "" {
+		log.Fatalln("Error: You must specify a search string")
+	}
+
+	// Are we trying to find a given machine?
+	if fWorkStation {
+		searchForMachine(ctx, flag.Arg(0))
+	} else {
+		searchForPeople(ctx, flag.Arg(0))
+	}
 	// We're done
 	log.Printf("Shutting down…")
 }
-
