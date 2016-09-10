@@ -4,9 +4,9 @@
 //
 
 /*
- Package implement my homemade configuration class
+Package config implements my homemade configuration class
 
- Looks into a YAML file for configuration options and returns a config.Config struct.
+Looks into a YAML file for configuration options and returns a config.Config struct.
 
  	import "config"
 
@@ -16,8 +16,8 @@
 
     rc := config.LoadConfig("foo.toml")
 
- In the first case, $HOME/.tag/config.toml will be loaded.  On Windows
- rc will be serialized from TOML.
+In the first case, $HOME/.tag/config.toml will be loaded.  On Windows
+rc will be serialized from TOML.
 */
 package config
 
@@ -33,6 +33,7 @@ import (
 	"log"
 )
 
+// Source describe a given LDAP/AD server
 type Source struct {
 	Site   string
 	Port   int
@@ -41,6 +42,7 @@ type Source struct {
 	Attrs  []string
 }
 
+// Config is the outer shell for config data
 type Config struct {
 	Verbose bool
 	Sources map[string]Source
@@ -54,9 +56,8 @@ func checkName(file string) string {
 		return filepath.Join(os.Getenv("HOME"),
 			fmt.Sprintf(".%s", file),
 			"config.toml")
-	} else {
-		return file
 	}
+	return file
 }
 
 // Basic Stringer for Config
@@ -69,7 +70,7 @@ func (c *Config) String() string {
 	return str
 }
 
-// Load a file as a TOML document and return the structure
+// LoadConfig loads a file as a TOML document and return the structure
 func LoadConfig(file string) (*Config, error) {
 	// Check for tag
 	sFile := checkName(file)
@@ -88,7 +89,7 @@ func LoadConfig(file string) (*Config, error) {
 	return c, err
 }
 
-// Set defaults
+// SetDefaults does what the name implies
 func (c *Config) SetDefaults() {
 	log.Fatalf("Please set the defaults in the config.toml file.")
 }

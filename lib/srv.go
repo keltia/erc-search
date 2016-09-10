@@ -7,7 +7,9 @@ import (
 )
 
 var (
+	// ErrEmptyDomain is for empty/nil parameter
 	ErrEmptyDomain = errors.New("empty domain name")
+	// ErrBadSRVRecord is for bad results
 	ErrBadSRVRecord = errors.New("bad/empty SRV record")
 )
 

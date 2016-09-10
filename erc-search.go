@@ -22,7 +22,7 @@ const (
 )
 
 var (
-	ctx context
+	ctx *context
 )
 
 type context struct {
@@ -36,7 +36,7 @@ func (ctx *context) NewSource(name string) (config.Source) {
 }
 
 // searchForPeople looks into the corporate LDAP
-func searchForPeople(ctx context, text string) {
+func searchForPeople(ctx *context, text string) {
 	// Do the actual connect
 	src := ctx.NewSource("corporate")
 	log.Printf("Source: %v CNF: %v", src, ctx.cnf)
@@ -76,7 +76,7 @@ func searchForPeople(ctx context, text string) {
 }
 
 // searchForMachine looks into AD for computers
-func searchForMachine(ctx context, name string) {
+func searchForMachine(ctx *context, name string) {
 	src := ctx.NewSource("ad")
 	myad, err := myldap.NewServer(src)
 	if err != nil {
@@ -99,7 +99,7 @@ func main() {
 		cnf.SetDefaults()
 	}
 
-	ctx = context{
+	ctx = &context{
 		cnf:     cnf,
 		verbose: false,
 	}

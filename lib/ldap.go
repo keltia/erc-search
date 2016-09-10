@@ -2,8 +2,8 @@
 //
 
 /*
-    Package to implement a thin layer over the ldap server
- */
+Package ldap implements a thin layer over the ldap server
+*/
 package ldap
 
 import (
@@ -12,10 +12,9 @@ import (
 	"github.com/keltia/erc-search/config"
 	"fmt"
 	"log"
-	"errors"
 )
 
-// Wrap the ldap parameters
+// Server wraps the ldap parameters
 type Server struct {
 	c      *ldap.Conn
 	Site   string
@@ -27,7 +26,7 @@ type Server struct {
 	Verbose bool
 }
 
-// Create a new client instance
+// NewServer creates a new client instance
 func NewServer(src config.Source) (srv *Server, err error) {
 	log.Printf("Adding %v as source", src)
 	// Connect to the server
@@ -55,7 +54,7 @@ func doConnect(site string, port int) (*ldap.Conn, error) {
 	// Connect
 	c, err := ldap.Dial("tcp", connstr);
 	if err != nil {
-		return c, errors.New(fmt.Sprintf("Error: Can't connect to %s\n", site))
+		return c, fmt.Errorf("Error: Can't connect to %s\n", site)
 	}
 
 	return c, nil
@@ -72,7 +71,7 @@ func (myldap *Server) Close() (error) {
 	return nil
 }
 
-// Search the specific attribute
+// SearchAttr explores the specific attribute
 func (myldap *Server) SearchAttr(query, attr string) (*ldap.SearchResult, error) {
 
 	filter := fmt.Sprintf(myldap.Filter, attr, query)
@@ -96,7 +95,7 @@ func (myldap *Server) SearchAttr(query, attr string) (*ldap.SearchResult, error)
 	return res, nil
 }
 
-// Do the actual search
+// Search does the actual search
 func (myldap *Server) Search(attrs map[string]bool, query string) (map[string]ldap.Entry, error) {
 
 	allResults := make(map[string]ldap.Entry)
