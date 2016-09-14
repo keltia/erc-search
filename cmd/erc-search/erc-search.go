@@ -52,6 +52,7 @@ func main () {
 		"kgivenname": true,
 		"ksn": true,
 		"uid": true,
+		"eurocontrolphonenumber": true,
 		"eurocontrolworkstation": false,
 	}
 
