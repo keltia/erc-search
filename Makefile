@@ -3,7 +3,7 @@
 VPATH=	cmd/erc-search:config
 GOBIN=	${GOPATH}/bin
 OPTS=	-ldflags="-s -w" -v
-SRCS=	erc-search.go cli.go ldap.go config.go defaults.go
+SRCS=	erc-search.go cli.go ldap.go config.go defaults.go version.go
 
 all:	erc-search
 

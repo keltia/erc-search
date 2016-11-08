@@ -14,6 +14,7 @@ import (
 	"flag"
 	"log"
 	"github.com/keltia/erc-search/config"
+	"os"
 )
 
 const (
@@ -24,15 +25,21 @@ const (
 func main () {
 	// Load config file if any
 	config, err := config.LoadConfig(RcFile); if err != nil {
-		log.Printf("Warning: can't load %s, using defaults\n", RcFile)
+		log.Printf("Warning: can't load %s, using defaults\n", config.Path)
 		config.SetDefaults()
 	}
 
 	// Parse CLI
 	flag.Parse()
 
+	if fVersion {
+		log.Printf("Version: %v", Version)
+		os.Exit(0)
+	}
+
 	if fVerbose {
 		log.Printf("Default config:\n%s", config.String())
+		log.Printf("Version: %v", Version)
 	}
 
 	// We need at least one argument
