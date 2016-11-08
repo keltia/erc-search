@@ -39,6 +39,7 @@ type Config struct {
 	Base   string
 	Filter string
 	Attrs  []string
+	Path   string
 }
 
 // Check the parameter for either tag or filename
@@ -66,6 +67,7 @@ func LoadConfig(file string) (*Config, error) {
 	sFile := checkName(file)
 
 	c := new(Config)
+	c.Path = sFile
 	buf, err := ioutil.ReadFile(sFile)
 	if err != nil {
 		return c, errors.New(fmt.Sprintf("Can not read %s", sFile))
