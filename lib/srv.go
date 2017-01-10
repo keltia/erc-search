@@ -3,7 +3,6 @@ package ldap
 import (
 	"errors"
 	"net"
-	"fmt"
 )
 
 var (
@@ -15,10 +14,13 @@ var (
 
 // GetServerName returns one server amongst all SRV records
 func GetServerName(domain string) (srv string, err error) {
-	if domain == "" {
-		srv = domain
-		err = ErrEmptyDomain
-	}
+
+    // domain must not be empty
+    if domain == "" {
+        err = ErrEmptyDomain
+        srv = domain
+        return
+    }
 
 	// Get the actual SRV records
 	_, addrs, err := net.LookupSRV("ldap", "tcp", domain)
@@ -28,7 +30,6 @@ func GetServerName(domain string) (srv string, err error) {
 		return
 	}
 
-	fmt.Printf("srv: %+v\n", addrs)
 	// We suppose the nameserver does the randomize itself
 	srv = addrs[0].Target
 	return
