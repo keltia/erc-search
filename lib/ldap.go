@@ -29,6 +29,17 @@ type Server struct {
 // NewServer creates a new client instance
 func NewServer(src config.Source) (srv *Server, err error) {
 	log.Printf("Adding %v as source", src)
+
+    // Get one of the SRV records if .Site is empty
+	if src.Site == "" {
+        rec, err := GetServerName(src.Domain)
+        if err != nil {
+            log.Printf("%+v - srv %+v\n", err, rec)
+            return
+        }
+        src.Site = rec
+    }
+
 	// Connect to the server
 	c, err := doConnect(src.Site, src.Port); if err != nil {
 		return nil, err
