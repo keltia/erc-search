@@ -1,21 +1,21 @@
 # Main Makefile for erc-search
 
-VPATH=	cmd/erc-search:config
+VPATH=	config:lib
 GOBIN=	${GOPATH}/bin
 OPTS=	-ldflags="-s -w" -v
-SRCS=	erc-search.go cli.go ldap.go config.go defaults.go version.go
+SRCS=	erc-search.go cli.go ldap.go config.go srv.go
 
 all:	erc-search
 
 install:
-	go install ${OPTS} ./...
+	go install ${OPTS}
 
 clean:
 	go clean -v
 	rm -f erc-search
 
 erc-search:    ${SRCS}
-	go build ${OPTS} ./...
+	go build ${OPTS}
 
 push:
 	git push --all

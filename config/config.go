@@ -4,9 +4,9 @@
 //
 
 /*
- Package implement my homemade configuration class
+Package config implements my homemade configuration class
 
- Looks into a YAML file for configuration options and returns a config.Config struct.
+Looks into a YAML file for configuration options and returns a config.Config struct.
 
  	import "config"
 
@@ -14,10 +14,10 @@
 
  	or
 
-    rc := config.LoadConfig("foo.yml")
+    rc := config.LoadConfig("foo.toml")
 
- In the first case, $HOME/.tag/config.yml will be loaded.  On Windows
- rc will be serialized from YAML.
+In the first case, $HOME/.tag/config.toml will be loaded.  On Windows
+rc will be serialized from TOML.
 */
 package config
 
@@ -27,19 +27,27 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
-	"errors"
-	"github.com/naoina/toml"
 	"strings"
+
+	"github.com/naoina/toml"
+	"log"
 )
 
-type Config struct {
+// Source describe a given LDAP/AD server
+type Source struct {
+	Domain string
 	Site   string
 	Port   int
 	Base   string
 	Filter string
 	Attrs  []string
 	Path   string
+}
+
+// Config is the outer shell for config data
+type Config struct {
+	Verbose bool
+	Sources map[string]Source
 }
 
 // Check the parameter for either tag or filename
@@ -50,18 +58,21 @@ func checkName(file string) string {
 		return filepath.Join(os.Getenv("HOME"),
 			fmt.Sprintf(".%s", file),
 			"config.toml")
-	} else {
-		return file
 	}
+	return file
 }
 
 // Basic Stringer for Config
 func (c *Config) String() string {
-	return fmt.Sprintf("ldap://%s:%d/%s\n  Filter: %s\n  Attrs: %v",
-		c.Site, c.Port, c.Base, c.Filter, c.Attrs)
+	str := fmt.Sprintf("Verbose = %v\n", c.Verbose)
+	for _, s := range c.Sources {
+		str = str + fmt.Sprintf("ldap://%s:%d/%s\n  Filter: %s\n  Attrs: %v\n",
+			s.Site, s.Port, s.Base, s.Filter, s.Attrs)
+	}
+	return str
 }
 
-// Load a file as a TOML document and return the structure
+// LoadConfig loads a file as a TOML document and return the structure
 func LoadConfig(file string) (*Config, error) {
 	// Check for tag
 	sFile := checkName(file)
@@ -70,23 +81,18 @@ func LoadConfig(file string) (*Config, error) {
 	c.Path = sFile
 	buf, err := ioutil.ReadFile(sFile)
 	if err != nil {
-		return c, errors.New(fmt.Sprintf("Can not read %s", sFile))
+		return c, fmt.Errorf("Can not read %s", sFile)
 	}
 
 	err = toml.Unmarshal(buf, &c)
 	if err != nil {
-		return c, errors.New(fmt.Sprintf("Error parsing toml %s: %v",
-			sFile, err))
+		return c, fmt.Errorf("Error parsing toml %s: %v", sFile, err)
 	}
 
 	return c, err
 }
 
-// Set defaults
+// SetDefaults does what the name implies
 func (c *Config) SetDefaults() {
-	c.Site = DEF_SERVER
-	c.Port = DEF_PORT
-	c.Base = DEF_BASE
-	c.Filter = DEF_FILTER
-	c.Attrs = DEF_ATTRS
+	log.Fatalf("Please set the defaults in the config.toml file.")
 }
