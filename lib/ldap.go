@@ -7,10 +7,9 @@ Package ldap implements a thin layer over the ldap server
 package ldap
 
 import (
-
+	"fmt"
 	"github.com/go-ldap/ldap"
 	"github.com/keltia/erc-search/config"
-	"fmt"
 	"log"
 )
 
@@ -30,28 +29,29 @@ type Server struct {
 func NewServer(src config.Source) (srv *Server, err error) {
 	log.Printf("Adding %v as source", src)
 
-    // Get one of the SRV records if .Site is empty
+	// Get one of the SRV records if .Site is empty
 	if src.Site == "" {
-        rec, lerr := GetServerName(src.Domain)
-        if lerr != nil {
-            log.Printf("%+v - srv %+v\n", lerr, rec)
-            err = lerr
-            return
-        }
-        src.Site = rec
-    }
+		rec, lerr := GetServerName(src.Domain)
+		if lerr != nil {
+			log.Printf("%+v - srv %+v\n", lerr, rec)
+			err = lerr
+			return
+		}
+		src.Site = rec
+	}
 
 	// Connect to the server
-	c, err := doConnect(src.Site, src.Port); if err != nil {
+	c, err := doConnect(src.Site, src.Port)
+	if err != nil {
 		return nil, err
 	}
 	return &Server{
-		c: c,
-		Site: src.Site,
-		Port: src.Port,
-		Base: src.Base,
+		c:      c,
+		Site:   src.Site,
+		Port:   src.Port,
+		Base:   src.Base,
 		Filter: src.Filter,
-		Attrs: src.Attrs,
+		Attrs:  src.Attrs,
 	}, err
 }
 
@@ -64,7 +64,7 @@ func doConnect(site string, port int) (*ldap.Conn, error) {
 	log.Printf("Connecting to %s\n", connstr)
 
 	// Connect
-	c, err := ldap.Dial("tcp", connstr);
+	c, err := ldap.Dial("tcp", connstr)
 	if err != nil {
 		return c, fmt.Errorf("Error: Can't connect to %s\n", site)
 	}
@@ -78,7 +78,7 @@ func (myldap *Server) SetVerbose(v bool) {
 }
 
 // Close the connection
-func (myldap *Server) Close() (error) {
+func (myldap *Server) Close() error {
 	myldap.c.Close()
 	return nil
 }
@@ -91,7 +91,7 @@ func (myldap *Server) SearchAttr(query, attr string) (*ldap.SearchResult, error)
 		log.Printf("  Using %s as filter\n", filter)
 	}
 	sr := ldap.NewSearchRequest(myldap.Base,
-	 	ldap.ScopeWholeSubtree,
+		ldap.ScopeWholeSubtree,
 		ldap.DerefAlways,
 		0, 0,
 		false,
