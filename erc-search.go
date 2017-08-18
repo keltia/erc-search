@@ -14,6 +14,8 @@ import (
 	"flag"
 	"github.com/keltia/erc-search/config"
 	"log"
+	"os"
+	"fmt"
 )
 
 const (
@@ -51,6 +53,11 @@ func main() {
 
 	// Parse CLI
 	flag.Parse()
+
+	if fVersion {
+		fmt.Printf("%s v%v\n", rcFile, Version)
+		os.Exit(0)
+	}
 
 	if fVerbose {
 		ctx.verbose = true
