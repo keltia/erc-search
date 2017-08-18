@@ -1,12 +1,11 @@
 // config.go
 //
 // Copyright 2015 © by Ollivier Robert <roberto@keltia.net>
-//
+// +build windows
 
 package config
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"

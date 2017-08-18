@@ -23,14 +23,9 @@ package config
 
 import (
 	"io/ioutil"
-
 	"fmt"
-	"os"
-	"path/filepath"
-	"strings"
-
-	"github.com/naoina/toml"
 	"log"
+	"github.com/naoina/toml"
 )
 
 // Source describe a given LDAP/AD server
@@ -47,18 +42,6 @@ type Source struct {
 type Config struct {
 	Verbose bool
 	Sources map[string]Source
-}
-
-// Check the parameter for either tag or filename
-func checkName(file string) string {
-	// Check for tag
-	if !strings.HasSuffix(file, ".toml") {
-		// file must be a tag so add a "."
-		return filepath.Join(os.Getenv("HOME"),
-			fmt.Sprintf(".%s", file),
-			"config.toml")
-	}
-	return file
 }
 
 // Basic Stringer for Config
