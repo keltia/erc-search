@@ -17,6 +17,8 @@ Looks into a YAML file for configuration options and returns a config.Config str
     rc := config.LoadConfig("foo.toml")
 
 In the first case, $HOME/.tag/config.toml will be loaded.  On Windows
+On Windows, in the first case, it is located in %LOCALAPPDATA%\erc-search\
+
 rc will be serialized from TOML.
 */
 package config
