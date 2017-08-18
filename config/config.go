@@ -35,6 +35,7 @@ import (
 
 // Source describe a given LDAP/AD server
 type Source struct {
+	Domain string
 	Site   string
 	Port   int
 	Base   string
