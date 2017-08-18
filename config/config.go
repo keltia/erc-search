@@ -41,7 +41,6 @@ type Source struct {
 	Base   string
 	Filter string
 	Attrs  []string
-	Path   string
 }
 
 // Config is the outer shell for config data
@@ -78,7 +77,6 @@ func LoadConfig(file string) (*Config, error) {
 	sFile := checkName(file)
 
 	c := new(Config)
-	c.Path = sFile
 	buf, err := ioutil.ReadFile(sFile)
 	if err != nil {
 		return c, fmt.Errorf("Can not read %s", sFile)
