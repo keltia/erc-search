@@ -18,6 +18,7 @@ import (
 
 const (
 	rcFile = "erc-search"
+	Version = "0.1"
 )
 
 var (
