@@ -20,7 +20,8 @@ attrs = [
 ]
 
 [sources.ad]
-site = "sspdc001.sky.corp.eurocontrol.int"
+domain = "sky.corp.eurocontrol.int"
+#site = "sspdc001.sky.corp.eurocontrol.int"
 port = 3268
 base = "DC=sky,DC=corp,DC=eurocontrol,DC=int"
 filter = "(%s=*%s*)"
