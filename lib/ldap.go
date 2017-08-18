@@ -32,9 +32,10 @@ func NewServer(src config.Source) (srv *Server, err error) {
 
     // Get one of the SRV records if .Site is empty
 	if src.Site == "" {
-        rec, err := GetServerName(src.Domain)
-        if err != nil {
-            log.Printf("%+v - srv %+v\n", err, rec)
+        rec, lerr := GetServerName(src.Domain)
+        if lerr != nil {
+            log.Printf("%+v - srv %+v\n", lerr, rec)
+            err = lerr
             return
         }
         src.Site = rec
