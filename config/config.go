@@ -24,10 +24,10 @@ rc will be serialized from TOML.
 package config
 
 import (
-	"io/ioutil"
 	"fmt"
+	"github.com/BurntSushi/toml"
+	"io/ioutil"
 	"log"
-	"github.com/naoina/toml"
 )
 
 // Source describe a given LDAP/AD server
