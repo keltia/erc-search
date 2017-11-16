@@ -21,13 +21,14 @@ On Windows, in the first case, it is located in %LOCALAPPDATA%\erc-search\
 
 rc will be serialized from TOML.
 */
-package config
+package main
 
 import (
 	"fmt"
 	"github.com/BurntSushi/toml"
 	"io/ioutil"
 	"log"
+	"path/filepath"
 )
 
 // Source describe a given LDAP/AD server
@@ -57,9 +58,9 @@ func (c *Config) String() string {
 }
 
 // LoadConfig loads a file as a TOML document and return the structure
-func LoadConfig(file string) (*Config, error) {
+func LoadConfig() (*Config, error) {
 	// Check for tag
-	sFile := checkName(file)
+	sFile := filepath.Join(basedir, "config.toml")
 
 	c := new(Config)
 	buf, err := ioutil.ReadFile(sFile)

@@ -17,24 +17,16 @@ Looks into a YAML file for configuration options and returns a config.Config str
     rc := config.LoadConfig("foo.toml")
 
 rc will be serialized from TOML.
+
+File location: $HOME/.config/erc-search/
 */
-package config
+package main
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
-// Check the parameter for either tag or filename
-func checkName(file string) string {
-	// Check for tag
-	if !strings.HasSuffix(file, ".toml") {
-		// file must be a tag so add a "."
-		return filepath.Join(os.Getenv("HOME"),
-			fmt.Sprintf(".%s", file),
-			"config.toml")
-	}
-	return file
-}
+var (
+	basedir = filepath.Join(os.Getenv("HOME"), ".config", rcFile)
+)

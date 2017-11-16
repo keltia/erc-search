@@ -12,7 +12,6 @@ package main
 
 import (
 	"flag"
-	"github.com/keltia/erc-search/config"
 	"log"
 	"os"
 	"fmt"
@@ -28,19 +27,19 @@ var (
 )
 
 type context struct {
-	cnf     *config.Config
+	cnf     *Config
 	verbose bool
 }
 
-func (ctx *context) NewSource(name string) (config.Source) {
+func (ctx *context) NewSource(name string) (Source) {
 	// Do the actual connect
 	return ctx.cnf.Sources[name]
 }
 
 // Start here
 func main() {
-	// Load config file if any
-	cnf, err := config.LoadConfig(rcFile)
+	// Load file if any
+	cnf, err := LoadConfig()
 	if err != nil {
 		log.Printf("Warning: can't load %s\n", rcFile)
 		cnf.SetDefaults()
