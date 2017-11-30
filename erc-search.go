@@ -12,13 +12,13 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
-	"fmt"
 )
 
 const (
-	rcFile = "erc-search"
+	rcFile  = "erc-search"
 	Version = "0.1"
 )
 
@@ -27,13 +27,15 @@ var (
 )
 
 type context struct {
-	cnf     *Config
-	verbose bool
+	cnf *Config
 }
 
-func (ctx *context) NewSource(name string) (Source) {
+func NewSource(name string) *Source {
 	// Do the actual connect
-	return ctx.cnf.Sources[name]
+	if s, ok := ctx.cnf.Sources[name]; ok {
+		return s
+	}
+	return nil
 }
 
 // Start here
@@ -46,8 +48,7 @@ func main() {
 	}
 
 	ctx = &context{
-		cnf:     cnf,
-		verbose: false,
+		cnf: cnf,
 	}
 
 	// Parse CLI
@@ -58,10 +59,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	if fVerbose {
-		ctx.verbose = true
-		log.Printf("Default config:\n%s", cnf.String())
-	}
+	verbose("Default config:\n%s", cnf.String())
 
 	// We need at least one argument
 	if flag.Arg(0) == "" {

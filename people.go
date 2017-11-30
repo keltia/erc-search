@@ -3,24 +3,25 @@ package main
 import (
     "log"
     "flag"
-    myldap "github.com/keltia/erc-search/lib"
 
 )
 
 // searchForPeople looks into the corporate LDAP
 func searchForPeople(ctx *context, text string) {
     // Do the actual connect
-    src := ctx.NewSource("corporate")
+    src := NewSource("corporate")
     log.Printf("Source: %v CNF: %v", src, ctx.cnf)
-    server, err := myldap.NewServer(src)
+    server, err := NewServer(&Source{
+        Domain: src.Domain,
+        Site:   src.Site,
+        Port:   src.Port,
+        Filter: src.Filter,
+        Base:   src.Base,
+    })
     if err != nil {
         log.Fatalf("Error: can not connect to %s: %v", src.Site, err)
     }
     defer server.Close()
-
-    if ctx.verbose {
-        server.SetVerbose(true)
-    }
 
     // Minimum search is uid
     attrs := map[string]bool{

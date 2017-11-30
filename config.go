@@ -4,8 +4,6 @@
 //
 
 /*
-Package config implements my homemade configuration class
-
 Looks into a YAML file for configuration options and returns a config.Config struct.
 
  	import "config"
@@ -31,25 +29,14 @@ import (
 	"path/filepath"
 )
 
-// Source describe a given LDAP/AD server
-type Source struct {
-	Domain string
-	Site   string
-	Port   int
-	Base   string
-	Filter string
-	Attrs  []string
-}
-
 // Config is the outer shell for config data
 type Config struct {
-	Verbose bool
-	Sources map[string]Source
+	Sources map[string]*Source
 }
 
 // Basic Stringer for Config
 func (c *Config) String() string {
-	str := fmt.Sprintf("Verbose = %v\n", c.Verbose)
+	str := ""
 	for _, s := range c.Sources {
 		str = str + fmt.Sprintf("ldap://%s:%d/%s\n  Filter: %s\n  Attrs: %v\n",
 			s.Site, s.Port, s.Base, s.Filter, s.Attrs)
