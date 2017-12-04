@@ -6,7 +6,7 @@ import (
 )
 
 // searchForPeople looks into the corporate LDAP
-func searchForPeople(ctx *context, text string) {
+func searchForPeople(text string) {
     // Do the actual connect
     src := NewSource("corporate")
     log.Printf("Source: %v CNF: %v", src, ctx.cnf)

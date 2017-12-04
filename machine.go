@@ -5,7 +5,7 @@ import (
 )
 
 // searchForMachine looks into AD for computers
-func searchForMachine(ctx *context, name string) {
+func searchForMachine(name string) {
     src := NewSource("ad")
     myad, err := NewServer(src)
     if err != nil {

@@ -68,9 +68,9 @@ func main() {
 
 	// Are we trying to find a given machine?
 	if fWorkStation {
-		searchForMachine(ctx, flag.Arg(0))
+		searchForMachine(flag.Arg(0))
 	} else {
-		searchForPeople(ctx, flag.Arg(0))
+		searchForPeople(flag.Arg(0))
 	}
 	// We're done
 	log.Printf("Shutting down…")
