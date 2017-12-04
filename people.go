@@ -2,7 +2,6 @@ package main
 
 import (
     "log"
-    "flag"
 
 )
 
@@ -37,7 +36,7 @@ func searchForPeople(ctx *context, text string) {
     }
 
     // Meat of the game, the search
-    res, err := server.Search(attrs, flag.Arg(0))
+    res, err := server.Search(text, attrs)
     if err != nil {
         log.Printf("Error: searching failed: %v", err)
     }
