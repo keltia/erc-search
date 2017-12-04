@@ -8,14 +8,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-ldap/ldap"
 	"log"
+
+	"github.com/go-ldap/ldap"
 )
 
 // Server wraps the ldap parameters
 type Server struct {
-	c      *ldap.Conn
-	s      *Source
+	c *ldap.Conn
+	s *Source
 }
 
 // Source describe a given LDAP/AD server
@@ -100,7 +101,7 @@ func (s *Server) SearchAttr(query, attr string) (*ldap.SearchResult, error) {
 }
 
 // Search does the actual search
-func (s *Server) Search(attrs map[string]bool, query string) (map[string]ldap.Entry, error) {
+func (s *Server) Search(query string, attrs map[string]bool) (map[string]ldap.Entry, error) {
 
 	allResults := make(map[string]ldap.Entry)
 	for attr, yes := range attrs {
