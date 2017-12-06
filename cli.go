@@ -13,13 +13,17 @@ import (
 )
 
 var (
+	fDebug    bool
 	fInclMail bool
 	fVerbose  bool
+	fVersion  bool
 	fWorkStation bool
 )
 
 func init() {
+	flag.BoolVar(&fDebug, "D", false, "debug mode")
 	flag.BoolVar(&fInclMail, "M", false, "Include mail search")
 	flag.BoolVar(&fVerbose, "v", false, "Be verbose")
+	flag.BoolVar(&fVersion, "V", false, "Display version and quit")
 	flag.BoolVar(&fWorkStation, "w", false, "Search Workstation name")
 }
