@@ -4,6 +4,12 @@ import (
 	"log"
 )
 
+const (
+	personTmpl = `DN: {{.DN}
+Name: {{.Kgivenname}} {{.Ksn}} — {{.UID}} [{{.Grade}}]
+Unit: {{.Unit}} — Mail: {{.Mail}} — Tel: {{.Tel}}`
+)
+
 // searchForPeople looks into the corporate LDAP
 func searchForPeople(text string) {
 	// Do the actual connect
