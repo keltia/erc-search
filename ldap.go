@@ -115,7 +115,6 @@ func (s *Server) Search(query string, attrs map[string]bool) (map[string]ldap.En
 			// Merge entries with the previous searches ones
 			verbose("  Merging %d entries…\n", len(res.Entries))
 			for _, entry := range res.Entries {
-				entry.PrettyPrint(2)
 				allResults[entry.GetAttributeValue("uid")] = *entry
 			}
 		}
