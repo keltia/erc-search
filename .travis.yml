@@ -10,5 +10,5 @@ branches:
   - develop
   - master
 install:
-  - go get github.com/BurntSushi
+  - go get github.com/BurntSushi/toml
   - go get github.com/go-ldap/ldap
