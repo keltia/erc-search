@@ -25,5 +25,4 @@ ${EXE}:    ${SRCS}
 
 push:
 	git push --all
-	git push --all origin
-	git push --all backup
+	git push --tags
