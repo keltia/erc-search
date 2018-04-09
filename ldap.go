@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/go-ldap/ldap"
+	"gopkg.in/ldap.v2"
 )
 
 // Server wraps the ldap parameters
