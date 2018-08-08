@@ -12,3 +12,4 @@ branches:
 install:
   - go get github.com/BurntSushi/toml
   - go get gopkg.in/ldap.v2
+  - go get github.com/pkg/errors
