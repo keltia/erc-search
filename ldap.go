@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/pkg/errors"
 	"gopkg.in/ldap.v2"
 )
 
@@ -19,27 +20,15 @@ type Server struct {
 	s *Source
 }
 
-// Source describe a given LDAP/AD server
-type Source struct {
-	Domain string
-	Site   string
-	Port   int
-	Base   string
-	Filter string
-	Attrs  []string
-}
-
 // NewServer creates a new client instance
 func NewServer(src *Source) (srv *Server, err error) {
-	log.Printf("Adding %v as source", src)
+	verbose("Adding %v as source", src)
 
 	// Get one of the SRV records if .Site is empty
 	if src.Site == "" {
 		rec, lerr := GetServerName(src.Domain)
 		if lerr != nil {
-			log.Printf("%+v - srv %+v\n", lerr, rec)
-			err = lerr
-			return
+			return &Server{}, errors.Wrapf(err, "%+v - srv %+v\n", lerr, rec)
 		}
 		src.Site = rec
 	}
@@ -47,7 +36,7 @@ func NewServer(src *Source) (srv *Server, err error) {
 	// Connect to the server
 	c, err := doConnect(src.Site, src.Port)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "connection failed to %s", src.Site)
 	}
 	return &Server{
 		c: c,
@@ -61,12 +50,12 @@ func doConnect(site string, port int) (*ldap.Conn, error) {
 	connstr := fmt.Sprintf("%s:%d", site, port)
 
 	// Even in non-verbose, display something
-	log.Printf("Connecting to %s\n", connstr)
+	verbose("Connecting to %s\n", connstr)
 
 	// Connect
 	c, err := ldap.Dial("tcp", connstr)
 	if err != nil {
-		return c, fmt.Errorf("Error: Can't connect to %s\n", site)
+		return c, errors.Wrapf(err, "can not connect to %s\n", site)
 	}
 
 	return c, nil
@@ -94,8 +83,7 @@ func (s *Server) SearchAttr(query, attr string) (*ldap.SearchResult, error) {
 	)
 	res, err := s.c.Search(sr)
 	if err != nil {
-		log.Printf("  Warning searching %s failed\n", filter)
-		return nil, err
+		return nil, errors.Wrapf(err, "warning searching %s failed\n", filter)
 	}
 	return res, nil
 }
@@ -119,5 +107,6 @@ func (s *Server) Search(query string, attrs map[string]bool) (map[string]ldap.En
 			}
 		}
 	}
+	debug("allResults=%v", allResults)
 	return allResults, nil
 }

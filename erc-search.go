@@ -19,7 +19,7 @@ import (
 
 const (
 	rcFile  = "erc-search"
-	Version = "0.3"
+	Version = "0.4"
 )
 
 var (
@@ -28,14 +28,6 @@ var (
 
 type context struct {
 	cnf *Config
-}
-
-func NewSource(name string) *Source {
-	// Do the actual connect
-	if s, ok := ctx.cnf.Sources[name]; ok {
-		return s
-	}
-	return nil
 }
 
 // Start here
@@ -70,8 +62,14 @@ func main() {
 	if fWorkStation {
 		searchForMachine(flag.Arg(0))
 	} else {
-		searchForPeople(flag.Arg(0))
+		err = searchForPeople(flag.Arg(0))
 	}
+
+	// Handle errors
+	if err != nil {
+		log.Printf("error running the search: %v", err)
+	}
+
 	// We're done
-	log.Printf("Shutting down…")
+	verbose("Shutting down…")
 }

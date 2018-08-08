@@ -1,5 +1,6 @@
 # Main Makefile for erc-search
 
+GO=	 go
 VPATH=	config:lib
 GOBIN=	${GOPATH}/bin
 OPTS=	-ldflags="-s -w" -v
@@ -11,17 +12,17 @@ EXE=	${BIN}.exe
 all:	${BIN} ${EXE}
 
 install:	${BIN}
-	go install ${OPTS} .
+	${GO} install ${OPTS} .
 
 clean:
-	go clean -v .
+	${GO} clean -v .
 	-/bin/rm -f ${BIN} ${EXE}
 
 ${BIN}:    ${SRCS}
-	go build ${OPTS} .
+	${GO} build ${OPTS} .
 
 ${EXE}:    ${SRCS}
-	GOOS=windows go build ${OPTS} .
+	GOOS=windows ${GO} build ${OPTS} .
 
 push:
 	git push --all

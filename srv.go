@@ -15,19 +15,15 @@ var (
 // GetServerName returns one server amongst all SRV records
 func GetServerName(domain string) (srv string, err error) {
 
-    // domain must not be empty
-    if domain == "" {
-        err = ErrEmptyDomain
-        srv = domain
-        return
-    }
+	// domain must not be empty
+	if domain == "" {
+		return domain, ErrEmptyDomain
+	}
 
 	// Get the actual SRV records
 	_, addrs, err := net.LookupSRV("ldap", "tcp", domain)
 	if err != nil {
-		srv = ""
-		err = ErrBadSRVRecord
-		return
+		return "", ErrBadSRVRecord
 	}
 
 	// We suppose the nameserver does the randomize itself
