@@ -73,5 +73,5 @@ func main() {
 		searchForPeople(flag.Arg(0))
 	}
 	// We're done
-	log.Printf("Shutting down…")
+	verbose("Shutting down…")
 }

@@ -32,7 +32,7 @@ type Source struct {
 
 // NewServer creates a new client instance
 func NewServer(src *Source) (srv *Server, err error) {
-	log.Printf("Adding %v as source", src)
+	verbose("Adding %v as source", src)
 
 	// Get one of the SRV records if .Site is empty
 	if src.Site == "" {

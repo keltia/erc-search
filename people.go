@@ -8,7 +8,7 @@ import (
 func searchForPeople(text string) {
 	// Do the actual connect
 	src := NewSource("corporate")
-	log.Printf("Source: %v CNF: %v", src, ctx.cnf)
+	verbose("Source: %v CNF: %v", src, ctx.cnf)
 	server, err := NewServer(&Source{
 		Domain: src.Domain,
 		Site:   src.Site,
@@ -44,5 +44,5 @@ func searchForPeople(text string) {
 	for _, entry := range res {
 		entry.PrettyPrint(2)
 	}
-	log.Printf("Found %d results\n", len(res))
+	verbose("Found %d results\n", len(res))
 }
