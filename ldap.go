@@ -20,16 +20,6 @@ type Server struct {
 	s *Source
 }
 
-// Source describe a given LDAP/AD server
-type Source struct {
-	Domain string
-	Site   string
-	Port   int
-	Base   string
-	Filter string
-	Attrs  []string
-}
-
 // NewServer creates a new client instance
 func NewServer(src *Source) (srv *Server, err error) {
 	verbose("Adding %v as source", src)

@@ -30,14 +30,6 @@ type context struct {
 	cnf *Config
 }
 
-func NewSource(name string) *Source {
-	// Do the actual connect
-	if s, ok := ctx.cnf.Sources[name]; ok {
-		return s
-	}
-	return nil
-}
-
 // Start here
 func main() {
 	// Load file if any
