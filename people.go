@@ -1,11 +1,11 @@
 package main
 
 import (
-	"log"
+	"github.com/pkg/errors"
 )
 
 // searchForPeople looks into the corporate LDAP
-func searchForPeople(text string) {
+func searchForPeople(text string) error {
 	// Do the actual connect
 	src := NewSource("corporate")
 	verbose("Source: %v CNF: %v", src, ctx.cnf)
@@ -18,7 +18,7 @@ func searchForPeople(text string) {
 		Attrs:  src.Attrs,
 	})
 	if err != nil {
-		log.Fatalf("Error: can not connect to %s: %v", src.Site, err)
+		return errors.Wrapf(err, "can not connect to %s", src.Site)
 	}
 	defer server.Close()
 
@@ -38,11 +38,12 @@ func searchForPeople(text string) {
 	// Meat of the game, the search
 	res, err := server.Search(text, attrs)
 	if err != nil {
-		log.Printf("Error: searching failed: %v", err)
+		return errors.Wrap(err, "search failed")
 	}
 
 	for _, entry := range res {
 		entry.PrettyPrint(2)
 	}
 	verbose("Found %d results\n", len(res))
+	return nil
 }

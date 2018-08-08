@@ -62,8 +62,14 @@ func main() {
 	if fWorkStation {
 		searchForMachine(flag.Arg(0))
 	} else {
-		searchForPeople(flag.Arg(0))
+		err = searchForPeople(flag.Arg(0))
 	}
+
+	// Handle errors
+	if err != nil {
+		log.Printf("error running the search: %v", err)
+	}
+
 	// We're done
 	verbose("Shutting down…")
 }
